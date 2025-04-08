@@ -30,9 +30,15 @@ dff btwo (
     .Q(state[2])
     );
     
-    assign next[0] = (state[0] & ~w) | (state == 3'b011 & ~w) | (state == 3'b100 & ~w);
-    assign next[1] = (state == 3'b001 & ~w) | (state == 3'b010 & ~w);
-    assign next[2] = (state == 3'b011 & w) | (state == 3'b100);
+    assign state[0] = 
+    (state[0] & ~w) | (state[1] & ~w) | (state[2] & ~w);
+    assign state[1] =
+    (state[0] & w) | (state[1] & ~w) | (state[2] & ~w);
+    assign state[2] =
+    (state[0] & ~w) | (state[1] & w) | (state[2] & w);
+    assign next[0] = 1'b0;
+    assign next[1] = (state[0] & ~w) | (state[1] & ~w) | (state[2] & ~w);
+    assign next[2] = (state[0] & w) | (state[1] & w) | (state[2] & w);
     
     assign z = (state == 3'b010) | (state == 3'b100); 
     
